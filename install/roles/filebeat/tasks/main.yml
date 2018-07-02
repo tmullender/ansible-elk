@@ -21,7 +21,10 @@
   register: filebeat_needs_restart
 
 - name: Start filebeat service
-  command: systemctl start filebeat.service
+  service:
+    state: started
+    name: filebeat
+    enabled: true
   ignore_errors: true
   become: true
   when: ((filebeat_needs_restart != 0) and (logging_backend != 'fluentd'))
@@ -57,7 +60,10 @@
   when: (logging_backend == 'fluentd')
 
 - name: Restarting rsyslog for fluentd
-  command: systemctl restart rsyslog.service
+  service:
+    state: restarted
+    name: rsyslog
+    enabled: true
   ignore_errors: true
   when: rsyslog_updated != 0
   become: true

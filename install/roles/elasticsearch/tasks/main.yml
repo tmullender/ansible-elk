@@ -62,6 +62,13 @@
   when: ansible_memory_mb.real.total|int >= 65536
   become: true
 
+- name: Update elasticsearch setup with java home
+  become: true
+  lineinfile:
+    path=/etc/sysconfig/elasticsearch
+    regexp='^#?JAVA_HOME=.*$'
+    line='JAVA_HOME=/usr/lib/jvm/jre-1.8.0'
+
 - name: Update elasticsearch startup with start heap size
   become: true
   lineinfile:
@@ -96,12 +103,6 @@
     state=link
   become: true
 
-- name: Start or restart elasticsearch service
-  command: systemctl restart elasticsearch.service
-  ignore_errors: true
-  when: elasticsearch_updated != 0
-  become: true
-
 - name: Setup elasticsearch service to autostart
-  service: name=elasticsearch state=started enabled=true
+  service: name=elasticsearch state=restarted enabled=true
   become: true

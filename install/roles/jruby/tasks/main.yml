@@ -1,0 +1,7 @@
+- name: Download JRuby
+  unarchive:
+    src: https://repo1.maven.org/maven2/org/jruby/jruby-dist/9.2.0.0/jruby-dist-9.2.0.0-bin.tar.gz
+    dest: /opt
+    creates: /opt/jruby-9.2.0.0
+    remote_src: yes
+  become: true

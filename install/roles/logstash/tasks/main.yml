@@ -21,6 +21,9 @@
 # this is a workaround for https://github.com/sadsfae/ansible-elk/issues/69
 - name: Update logstash-input-udp to latest version
   command: /usr/share/logstash/bin/logstash-plugin update logstash-input-udp
+  environment:
+    PATH: "/opt/jruby-9.2.0.0/bin:{{ ansible_env[PATH] }}"
+    JAVA_HOME: /usr/lib/jvm/jre-1.8.0
   become: true
 
 - name: Copy logstash filter configuration
@@ -29,6 +32,15 @@
     dest=/etc/logstash/conf.d/logstash.conf
     owner=logstash
     group=logstash
+    mode=0644
+  become: true
+
+- name: Copy logstash conf file
+  copy:
+    src=logstash-sys.conf
+    dest=/etc/sysconfig/logstash
+    owner=root
+    group=root
     mode=0644
   become: true
 

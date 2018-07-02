@@ -8,6 +8,15 @@
       state=present
   become: true
 
+- name: Add nginx repo
+  template:
+    src=yum.repo
+    dest=/etc/yum.repos.d/nginx.repo
+    owner=root
+    group=root
+    mode=0644
+  become: true
+
 - name: Install nginx, httpd-tools, httplib2
   yum: name={{ item }} state=present
   become: true
@@ -15,11 +24,6 @@
     - nginx
     - httpd-tools
     - python-httplib2
-
-# SELinux boolean for nginx
-- name: Apply SELinux boolean httpd_can_network_connect
-  seboolean: name=httpd_can_network_connect state=yes persistent=yes
-  become: true
 
 # create /etc/nginx/conf.d/ directory
 - name: Create nginx directory structure
@@ -49,9 +53,18 @@
     mode=0644
   become: true
 
+- name: Fix nginx init.d script pidfile location
+  lineinfile:
+    path=/etc/sysconfig/nginx
+    regexp='^PIDFILE=.*$'
+    line='PIDFILE=/run/nginx.pid'
+
 # start nginx service
 - name: Start nginx service
-  command: systemctl restart nginx.service
+  service:
+    name: nginx
+    state: restarted
+    enabled: true
   ignore_errors: true
   when: nginx_needs_restart != 0
   become: true

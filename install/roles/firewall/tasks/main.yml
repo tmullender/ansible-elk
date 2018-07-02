@@ -67,6 +67,7 @@
     regexp: '^INPUT -i lo -j ACCEPT'
     insertbefore: '-A INPUT -i lo -j ACCEPT'
     backup: yes
+    create: yes
   when: es_listen_external and firewalld_in_use.rc != 0 and firewalld_is_active.rc != 0 and iptables_es_local_port_exists.stdout|int == 0
   register: iptables_needs_restart
   become: true
@@ -124,6 +125,7 @@
     regexp: '^INPUT -i lo -j ACCEPT'
     insertbefore: '-A INPUT -i lo -j ACCEPT'
     backup: yes
+    create: yes
   when: syslog_listen_external and firewalld_in_use.rc != 0 and firewalld_is_active.rc != 0 and iptables_logstash_localsyslog_port_exists.stdout|int == 0
   register: iptables_needs_restart
   become: true
@@ -198,6 +200,7 @@
     regexp: '^INPUT -i lo -j ACCEPT'
     insertbefore: '-A INPUT -i lo -j ACCEPT'
     backup: yes
+    create: yes
   when: firewalld_in_use.rc != 0 and firewalld_is_active.rc != 0 and iptables_logstash_syslog_port_exists.stdout|int == 0
   register: iptables_needs_restart
   become: true
@@ -276,6 +279,7 @@
     regexp: '^INPUT -i lo -j ACCEPT'
     insertbefore: '-A INPUT -i lo -j ACCEPT'
     backup: yes
+    create: yes
   when: firewalld_in_use.rc != 0 and firewalld_is_active.rc != 0 and iptables_kibana_port_exists.stdout|int == 0
   register: iptables_needs_restart
   become: true
@@ -345,6 +349,7 @@
     regexp: '^INPUT -i lo -j ACCEPT'
     insertbefore: '-A INPUT -i lo -j ACCEPT'
     backup: yes
+    create: yes
   when: firewalld_in_use.rc != 0 and firewalld_is_active.rc != 0 and iptables_elk_server_ssl_exists.stdout|int == 0
   register: iptables_needs_restart
   become: true
@@ -406,6 +411,7 @@
     regexp: '^INPUT -i lo -j ACCEPT'
     insertbefore: '-A INPUT -i lo -j ACCEPT'
     backup: yes
+    create: yes
   when: firewalld_in_use.rc != 0 and firewalld_is_active.rc != 0 and iptables_fluentd_syslog_exists.stdout|int == 0
   register: iptables_needs_restart
   become: true
@@ -459,6 +465,7 @@
     regexp: '^INPUT -i lo -j ACCEPT'
     insertbefore: '-A INPUT -i lo -j ACCEPT'
     backup: yes
+    create: yes
   when: firewalld_in_use.rc != 0 and firewalld_is_active.rc != 0 and iptables_fluentd_http_exists.stdout|int == 0
   register: iptables_needs_restart
   become: true
