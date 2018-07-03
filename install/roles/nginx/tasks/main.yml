@@ -43,6 +43,11 @@
   become: true
   register: nginx_needs_restart
 
+- name: Remove default nginx site
+  file:
+    path: /etc/nginx/conf.d/default.conf
+    state: absent
+
 # deploy basic nginx.conf 8080 vhost
 - name: Setup nginx TCP/8080 vhost for SSL certificate
   template:
